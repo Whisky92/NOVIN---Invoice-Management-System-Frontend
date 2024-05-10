@@ -1,0 +1,87 @@
+.form_section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 40%;
+  }
+  
+  .form_popup {
+      border: 2px solid green;
+      border-radius: 10px;
+      width: 70%;
+      height: 90%;
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form_header, #back_btn_div {
+      flex-basis: 10%;
+    }
+
+    .form_header {
+      background-color: #3eb489;
+      display: flex;
+      justify-content: center;
+      font-size: 3em;
+      font-weight: bold;
+      margin-bottom: 2rem;
+    }
+
+    .form_container {
+      flex-basis: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .label_div {
+      width: 80%;
+      flex-basis: 12.14%;
+    }
+    
+    .label_div, #back_btn_div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .label_div {
+      flex-direction: column;
+      padding: 1rem 0;
+    }
+
+    .input_field {
+      padding: 0 1rem;
+      border: 1px solid
+    }
+
+    #submit_btn_div {
+      flex-basis: 15%;
+      padding: 1rem 0;
+    }
+
+    #back_btn_div {
+      padding-bottom: 0.5rem;
+    }
+
+    .input_label, .input_field {
+      flex-basis: 50%;
+      width: 100%;
+    }
+
+    .btn_div {
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .btn {
+      background-color: #3eb489;
+      height: 100%;
+      width: 30%;
+      font-weight: bold;
+      font-style: italic;
+    }

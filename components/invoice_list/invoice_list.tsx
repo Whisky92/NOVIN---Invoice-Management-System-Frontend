@@ -5,6 +5,7 @@ import axios from "axios";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import styles from "./invoice_list.module.css";
+import { useRouter } from "next/navigation";
 
 interface Invoice {
     id: number;
@@ -20,10 +21,12 @@ export default function InvoiceList() {
     const { token } = useSelector((state: RootState) => state.userInfo.value);
     const [requestPending, setRequestPending] = useState<boolean>(true);
     const invoices = useRef<Array<Invoice>>(new Array<Invoice>());
+    const router = useRouter();
     console.log(invoices);
 
     function createInvoice(event: MouseEvent) {
         event.preventDefault();
+        router.push("/create_invoice");
     }
 
     useEffect(() => {
