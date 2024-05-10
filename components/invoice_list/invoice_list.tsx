@@ -18,10 +18,13 @@ interface Invoice {
 }
 
 export default function InvoiceList() {
-    const { token } = useSelector((state: RootState) => state.userInfo.value);
-    const [requestPending, setRequestPending] = useState<boolean>(true);
+    const { token, username } = useSelector((state: RootState) => state.userInfo.value);
+    const [allInvoicesRequestPending, setAllInvoicesRequestPending] = useState<boolean>(true);
     const invoices = useRef<Array<Invoice>>(new Array<Invoice>());
+    const [roleRequestPending, setRoleRequestPending] = useState<boolean>(true);
+    const roles = useRef<Array<String>>(new Array<String>());
     const router = useRouter();
+    
     console.log(invoices);
 
     function createInvoice(event: MouseEvent) {
@@ -30,7 +33,7 @@ export default function InvoiceList() {
     }
 
     useEffect(() => {
-        if (requestPending) {
+        if (allInvoicesRequestPending) {
             axios.get('http://localhost:8082/invoices/getAllInvoices', { 
                 headers: {
                     'Authorization': 'Bearer ' + token
@@ -40,7 +43,26 @@ export default function InvoiceList() {
                 console.log(response.data);
                 const listOfRoles = response.data as Array<Invoice>;
                 invoices.current = listOfRoles;
-                setRequestPending(false);
+                setAllInvoicesRequestPending(false);
+            })
+            .catch(error => {
+                console.log(error);
+            });  
+        }
+        
+        if (roleRequestPending) {
+            axios.get(`http://localhost:8082/users/getRole/${username}`, { 
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            })
+            .then(response => {
+                console.log(response.data);
+                const listOfRoles = response.data as Array<String>;
+                listOfRoles.forEach((element) => {
+                    roles.current.push(element);
+                });
+                setRoleRequestPending(false);
             })
             .catch(error => {
                 console.log(error);
@@ -76,9 +98,11 @@ export default function InvoiceList() {
                     })}
                 </tbody>
             </table>
-            <div className={styles.btn_div}>
-                <button onClick={createInvoice} className={styles.create_invoice_btn}>Create new invoice</button>
-            </div>
+            { ((roles.current.indexOf("ADMINISTRATOR") > -1) || (roles.current.indexOf("ACCOUNTANT") > -1)) &&
+                <div className={styles.btn_div}>
+                    <button onClick={createInvoice} className={styles.create_invoice_btn}>Create new invoice</button>
+                </div>
+            }
         </div>
     )
 }
