@@ -1,12 +1,74 @@
 'use client';
 
-import { useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
 import styles from "./register_form.module.css";
+import { useRouter } from "next/navigation";
+import axios, { HttpStatusCode } from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "@utils/my-redux-store/slices/tokenSlice";
+
+interface MyFormElements extends HTMLFormControlsCollection {
+    first_name: HTMLInputElement
+    last_name: HTMLInputElement
+    username: HTMLInputElement
+    password: HTMLInputElement
+    user_btn: HTMLInputElement
+    accountant_btn: HTMLInputElement
+}
+
+interface MyFormElements extends HTMLFormElement {
+    readonly elements: MyFormElements
+}
 
 export default function RegisterForm() {
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-    const setVisibility = (button: HTMLButtonElement, inputFields: Array<HTMLInputElement>,
-        passwordInputField: HTMLInputElement, radioBtns: Array<HTMLInputElement>) => {
+    function backToLogin(ev: MouseEvent) {
+        ev.preventDefault();
+        router.push("/");
+    }
+
+    function register(event: React.FormEvent<MyFormElements>) {
+        event.preventDefault();
+
+        const firstName = event.currentTarget.elements.first_name.value;
+        const lastName = event.currentTarget.elements.last_name.value;
+        const userName = event.currentTarget.elements.username.value;
+        const password = event.currentTarget.elements.password.value;
+        const userRadioButton = event.currentTarget.elements.user_btn.checked;
+        
+        const selectedRole: String[] = new Array();
+        if (userRadioButton) {
+            selectedRole.push("USER");
+        } else {
+            selectedRole.push("ACCOUNTANT");
+        }
+
+        axios.post("http://localhost:8082/auth/register", {
+            firstName: firstName,
+            lastName: lastName,
+            userName: userName,
+            password: password,
+            roles: {
+                roles: selectedRole
+            }
+        })
+        .then((response) => {
+            console.log(response.data);
+            console.log(response.status);
+            if (response.status === HttpStatusCode.Ok) {
+                console.log(response.data.token);
+                dispatch(setToken(response.data.token));
+            }
+        })
+        .catch((error) => {
+            alert(error.response.data);
+        })
+    }
+
+    function setVisibility(button: HTMLButtonElement, inputFields: Array<HTMLInputElement>,
+        passwordInputField: HTMLInputElement, radioBtns: Array<HTMLInputElement>) {
         const inputFieldsFilled = inputFields.every((inputField) => inputField.value.trim() != "");
         const passwordInputFilled = passwordInputField.value != "";
         const radioBtnSelected = radioBtns.some((radioBtn) => radioBtn.checked);
@@ -59,9 +121,9 @@ export default function RegisterForm() {
         <section className={styles.form_section}>
             <div className={styles.form_popup} id="myForm">
                 <h1 className={styles.form_header}>Register</h1>
-                <form className={styles.form_container}>
+                <form onSubmit={register} className={styles.form_container}>
                     <div className={styles.label_div}>
-                        <label htmlFor="firstname" className={styles.input_label}><b>First name</b></label>
+                        <label htmlFor="first_name" className={styles.input_label}><b>First name</b></label>
                         <input className={styles.input_field} type="text" placeholder="First name" name="first_name" id="first_name" required/>
                     </div>
                     <div className={styles.label_div}>
@@ -96,7 +158,7 @@ export default function RegisterForm() {
                     </div>
                 </form>
                 <div className={styles.btn_div} id={styles.back_btn_div}>
-                    <button className={styles.btn}>
+                    <button onClick={backToLogin} className={styles.btn}>
                         Back
                     </button>
                 </div>

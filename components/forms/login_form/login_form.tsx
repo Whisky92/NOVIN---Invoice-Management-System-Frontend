@@ -1,11 +1,54 @@
-'use client';
+'use client'
 
-import { useEffect } from "react";
+import { MouseEvent, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./login_form.module.css";
+import axios, { HttpStatusCode } from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "@utils/my-redux-store/slices/tokenSlice";
+
+interface MyFormElements extends HTMLFormControlsCollection {
+    username: HTMLInputElement
+    password: HTMLInputElement
+}
+
+interface MyFormElements extends HTMLFormElement {
+    readonly elements: MyFormElements
+}
 
 export default function LoginForm() {
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-    const setVisibility = (button: HTMLButtonElement, usernameInput: HTMLInputElement, passwordInput: HTMLInputElement) => {
+    function register(ev: MouseEvent) {
+        ev.preventDefault();
+        router.push("/register");
+    }
+
+    function login(event: React.FormEvent<MyFormElements>) {
+        event.preventDefault();
+
+        const userName = event.currentTarget.elements.username.value;
+        const password = event.currentTarget.elements.password.value;
+
+        axios.post("http://localhost:8082/auth/login", {
+            userName: userName,
+            password: password,
+        })
+        .then((response) => {
+            console.log(response.data);
+            console.log(response.status);
+            if (response.status === HttpStatusCode.Ok) {
+                console.log(response.data.token);
+                dispatch(setToken(response.data.token));
+            }
+        })
+        .catch((error) => {
+            alert("Something went wrong!");
+        })
+    }
+
+    function setVisibility(button: HTMLButtonElement, usernameInput: HTMLInputElement, passwordInput: HTMLInputElement) {
         const usernameInputFilled = usernameInput.value.trim() != "";
         const passwordInputFilled = passwordInput.value != "";
 
@@ -38,7 +81,7 @@ export default function LoginForm() {
         <section className={styles.form_section}>
             <div className={styles.form_popup} id="myForm">
                 <h1 className={styles.form_header}>Login</h1>
-                <form className={styles.form_container}>
+                <form onSubmit={login} className={styles.form_container}>
                     <div className={styles.label_div}>
                         <label htmlFor="username" className={styles.input_label}><b>Username</b></label>
                         <input className={styles.input_field} type="text" placeholder="Username" name="username" id="username" required/>
@@ -54,7 +97,7 @@ export default function LoginForm() {
                     </div>
                 </form>
                 <div className={styles.btn_div} id={styles.register_btn_div}>
-                    <button className={styles.btn}>
+                    <button onClick={register} className={styles.btn}>
                         Register
                     </button>
                 </div>
