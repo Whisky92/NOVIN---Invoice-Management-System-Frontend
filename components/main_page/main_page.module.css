@@ -1,0 +1,19 @@
+.btn_section {
+    width: 50%;
+    height: 50%;
+    border: 2px solid green;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.menu_btn {
+    background-color: #3eb489;
+    border-radius: 0.5rem;
+    width: 50%;
+    height: 20%;
+    font-size: 1.5rem;
+    font-weight: bold;
+}

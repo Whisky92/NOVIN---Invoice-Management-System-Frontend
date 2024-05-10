@@ -5,7 +5,7 @@ import styles from "./register_form.module.css";
 import { useRouter } from "next/navigation";
 import axios, { HttpStatusCode } from "axios";
 import { useDispatch } from "react-redux";
-import { setToken } from "@utils/my-redux-store/slices/tokenSlice";
+import { setToken, setUserName } from "@utils/my-redux-store/slices/userInfoSlice";
 
 interface MyFormElements extends HTMLFormControlsCollection {
     first_name: HTMLInputElement
@@ -60,6 +60,8 @@ export default function RegisterForm() {
             if (response.status === HttpStatusCode.Ok) {
                 console.log(response.data.token);
                 dispatch(setToken(response.data.token));
+                dispatch(setUserName(userName));
+                router.push("/main_page");
             }
         })
         .catch((error) => {

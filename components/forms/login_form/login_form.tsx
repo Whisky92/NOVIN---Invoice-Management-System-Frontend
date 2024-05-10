@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./login_form.module.css";
 import axios, { HttpStatusCode } from "axios";
 import { useDispatch } from "react-redux";
-import { setToken } from "@utils/my-redux-store/slices/tokenSlice";
+import { setToken, setUserName } from "@utils/my-redux-store/slices/userInfoSlice";
 
 interface MyFormElements extends HTMLFormControlsCollection {
     username: HTMLInputElement
@@ -41,6 +41,8 @@ export default function LoginForm() {
             if (response.status === HttpStatusCode.Ok) {
                 console.log(response.data.token);
                 dispatch(setToken(response.data.token));
+                dispatch(setUserName(userName));
+                router.push("/main_page");
             }
         })
         .catch((error) => {
