@@ -25,8 +25,6 @@ export default function InvoiceList() {
     const roles = useRef<Array<String>>(new Array<String>());
     const router = useRouter();
     
-    console.log(invoices);
-
     function createInvoice(event: MouseEvent) {
         event.preventDefault();
         router.push("/create_invoice");
@@ -44,7 +42,6 @@ export default function InvoiceList() {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 const listOfRoles = response.data as Array<Invoice>;
                 invoices.current = listOfRoles;
                 setAllInvoicesRequestPending(false);
@@ -61,7 +58,6 @@ export default function InvoiceList() {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 const listOfRoles = response.data as Array<String>;
                 listOfRoles.forEach((element) => {
                     roles.current.push(element);

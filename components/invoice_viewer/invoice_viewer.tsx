@@ -31,7 +31,6 @@ export default function InvoiceViewer({id}: propsType) {
     function backToInvoiceList(event: MouseEvent) {
         event.preventDefault();
         router.push("/invoice_list");
-        console.log(invoice.current);
     }
 
     useEffect(() => {
@@ -42,7 +41,6 @@ export default function InvoiceViewer({id}: propsType) {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 invoice.current = response.data as Invoice;
                 setRequestPending(false);
             })

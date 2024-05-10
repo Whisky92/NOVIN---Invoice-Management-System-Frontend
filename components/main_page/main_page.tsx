@@ -25,8 +25,6 @@ export default function MainPage() {
 
     function logout(event: MouseEvent) {
         event.preventDefault();
-        console.log("itt");
-        console.log(token);
 
         axios.post("http://localhost:8082/auth/logout", { 
             headers: {
@@ -34,7 +32,7 @@ export default function MainPage() {
             }
         })
         .then(response => {
-            console.log(response.data);
+            alert("You have successfully logged out");
             router.push("/");
         })
         .catch(error => {
@@ -50,7 +48,6 @@ export default function MainPage() {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 const listOfRoles = response.data as Array<String>;
                 listOfRoles.forEach((element) => {
                     roles.current.push(element);

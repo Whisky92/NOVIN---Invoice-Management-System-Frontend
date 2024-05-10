@@ -63,8 +63,6 @@ export default function InvoiceForm() {
             }
         })
         .then((response) => {
-            console.log(response.data);
-            console.log(response.status);
             alert('Invoice successfully created!');
             router.push("/invoice_list");
         })

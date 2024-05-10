@@ -36,12 +36,10 @@ export default function LoginForm() {
             password: password,
         })
         .then((response) => {
-            console.log(response.data);
-            console.log(response.status);
             if (response.status === HttpStatusCode.Ok) {
-                console.log(response.data.token);
                 dispatch(setToken(response.data.token));
                 dispatch(setUserName(userName));
+                alert("You have successfully logged in");
                 router.push("/main_page");
             }
         })

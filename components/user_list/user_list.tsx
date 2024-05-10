@@ -38,14 +38,13 @@ export default function UserList() {
     const router = useRouter();
 
     function deleteUser(id: number) {
-        console.log("ide belép");
         axios.delete(`http://localhost:8082/users/delete/${id}`, { 
             headers: {
                 'Authorization': 'Bearer ' + token
             }
         })
         .then(response => {
-            console.log(response.data);
+            alert("User successfully deleted");
             router.push("/main_page");
         })
         .catch(error => {
@@ -64,10 +63,6 @@ export default function UserList() {
             alert("At least one checkbox must be selected");
             return;
         }
-
-        console.log(userCheckBox);
-        console.log(accountantCheckBox);
-        console.log(administratorCheckBox);
 
         const newRoles = new Array<String>();
         if (userCheckBox) {
@@ -90,7 +85,7 @@ export default function UserList() {
             }
         })
         .then(response => {
-            console.log(response.data);
+            alert("Roles successfully updated");
             router.push("/main_page");
         })
         .catch(error => {
@@ -100,7 +95,6 @@ export default function UserList() {
 
 
     useEffect(() => {
-        console.log(requestPending);
         if (requestPending) {
             axios.get(`http://localhost:8082/users/getAllUsers`, { 
                 headers: {
@@ -108,7 +102,6 @@ export default function UserList() {
                 }
             })
             .then(response => {
-                console.log(response.data);
                 const listOfUsers = response.data as Array<User>;
                 users.current = listOfUsers;
                 setRequestPending(false);

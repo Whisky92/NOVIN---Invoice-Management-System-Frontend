@@ -55,10 +55,8 @@ export default function RegisterForm() {
             }
         })
         .then((response) => {
-            console.log(response.data);
-            console.log(response.status);
             if (response.status === HttpStatusCode.Ok) {
-                console.log(response.data.token);
+                alert("Registration successful");
                 dispatch(setToken(response.data.token));
                 dispatch(setUserName(userName));
                 router.push("/main_page");
