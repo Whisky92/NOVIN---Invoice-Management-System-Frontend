@@ -13,6 +13,11 @@ export default function MainPage() {
     const roles = useRef<Array<String>>(new Array<String>());
     const router = useRouter();
 
+    function showUserList(event: MouseEvent) {
+        event.preventDefault();
+        router.push("/user_list");
+    }
+
     function showInvoiceList(event: MouseEvent) {
         event.preventDefault();
         router.push("/invoice_list");
@@ -61,7 +66,7 @@ export default function MainPage() {
     return (
         (requestPending) ? (<></>) : (
             <section className={styles.btn_section}>
-                { (roles.current.indexOf("ADMINISTRATOR") > -1) && <button className={styles.menu_btn} id="administrator_page_btn">Administration Page</button> }
+                { (roles.current.indexOf("ADMINISTRATOR") > -1) && <button onClick={showUserList} className={styles.menu_btn} id="administrator_page_btn">Administration Page</button> }
                 <button onClick={showInvoiceList} className={styles.menu_btn} id="invoice_list_btn">List of Invoices</button>
                 <button onClick={logout} className={styles.menu_btn} id="logout_btn">Logout</button>
             </section>

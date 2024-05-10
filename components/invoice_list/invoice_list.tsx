@@ -32,6 +32,10 @@ export default function InvoiceList() {
         router.push("/create_invoice");
     }
 
+    function viewInvoice(id: number) {
+        router.push(`/invoice_viewer?invoiceId=${id}`);
+    }
+
     useEffect(() => {
         if (allInvoicesRequestPending) {
             axios.get('http://localhost:8082/invoices/getAllInvoices', { 
@@ -68,6 +72,8 @@ export default function InvoiceList() {
                 console.log(error);
             });  
         }
+
+
     })
 
     return (
@@ -82,6 +88,7 @@ export default function InvoiceList() {
                         <th scope="col">ItemName</th>
                         <th scope="col">Comment</th>
                         <th scope="col">Price</th>
+                        <th scope="col">NavigationButton</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,6 +101,11 @@ export default function InvoiceList() {
                             <td>{invoice.itemName}</td>
                             <td>{invoice.comment}</td>
                             <td>{invoice.price}</td>
+                            <td>
+                                <button onClick={() => viewInvoice(invoice.id)} name="view_btn" className={styles.view_btn} value={invoice.id}>
+                                    View invoice
+                                </button>
+                            </td>
                         </tr>
                     })}
                 </tbody>
