@@ -1,15 +1,12 @@
 "use client";
 
-import InvoiceViewer from "@components/invoice_viewer/invoice_viewer";
-import { useSearchParams } from "next/navigation";
+import InvoiceViewerWrapper from "@components/invoice_viewer/invoice_viewer_wrapper";
 
 export default function Home() {
-    const searchParams = useSearchParams();
-    const id = searchParams.get("invoiceId");
 
     return (
-        <section className="home_section">
-            <InvoiceViewer id={id} />
-        </section>
+            <section className="home_section">
+                <InvoiceViewerWrapper/>
+            </section>
     );
 }

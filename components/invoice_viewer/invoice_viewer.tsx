@@ -4,7 +4,7 @@ import styles from "./invoice_viewer.module.css";
 import { RootState } from "@utils/my-redux-store/store";
 import axios from "axios";
 import moment from "moment";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -18,15 +18,13 @@ interface Invoice {
     price: number;
 }
 
-type propsType = {
-    id: string;
-}
-
-export default function InvoiceViewer({id}: propsType) {
+export default function InvoiceViewer() {
     const { token } = useSelector((state: RootState) => state.userInfo.value);
     const [requestPending, setRequestPending] = useState<boolean>(true);
     const invoice = useRef<Invoice | null>(null);
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const id = searchParams.get("invoiceId");
 
     function backToInvoiceList(event: MouseEvent) {
         event.preventDefault();
